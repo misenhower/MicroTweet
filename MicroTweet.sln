@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroTweet", "MicroTweet\MicroTweet.csproj", "{A3251D56-B4F0-48D1-98FD-CB51D2082D86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApplication", "SampleApplication\SampleApplication.csproj", "{B7475B29-EB94-48CA-BAFB-7A9D431A2348}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,12 @@ Global
 		{A3251D56-B4F0-48D1-98FD-CB51D2082D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3251D56-B4F0-48D1-98FD-CB51D2082D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3251D56-B4F0-48D1-98FD-CB51D2082D86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7475B29-EB94-48CA-BAFB-7A9D431A2348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7475B29-EB94-48CA-BAFB-7A9D431A2348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7475B29-EB94-48CA-BAFB-7A9D431A2348}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B7475B29-EB94-48CA-BAFB-7A9D431A2348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7475B29-EB94-48CA-BAFB-7A9D431A2348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7475B29-EB94-48CA-BAFB-7A9D431A2348}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
