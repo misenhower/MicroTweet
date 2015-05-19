@@ -14,6 +14,10 @@ namespace SampleApplication
             while (IPAddress.GetDefaultLocalAddress() == IPAddress.Any)
                 Thread.Sleep(50);
 
+            // Update the current time (since Twitter OAuth API requests require a valid timestamp)
+            DateTime utcTime = Sntp.GetCurrentUtcTime();
+            Microsoft.SPOT.Hardware.Utility.SetLocalTime(utcTime);
+
             // Set up application and user credentials
             // Visit https://apps.twitter.com/ to create a new Twitter application and get API keys/user access tokens
             var appCredentials = new OAuthApplicationCredentials()
