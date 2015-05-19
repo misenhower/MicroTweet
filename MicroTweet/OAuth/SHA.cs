@@ -40,7 +40,7 @@ namespace MicroTweet
 
             // Add the message length in bits (as a big-endian 64-bit integer)
             ulong messageLength = (ulong)message.Length * 8;
-            byte[] lengthBytes = BitConverter.GetBytes(ReverseBytes(messageLength));
+            byte[] lengthBytes = BitConverter.GetBytes(Utility.ReverseBytes(messageLength));
             Array.Copy(lengthBytes, 0, processedMessage, processedMessageLength - 8, 8);
 
             // Process the message in 512-bit (64-byte) chunks
@@ -48,7 +48,7 @@ namespace MicroTweet
             {
                 // Break the chunk into sixteen 32-bit big-endian words
                 for (i = 0; i < 16; i++)
-                    w[i] = ReverseBytes(BitConverter.ToUInt32(processedMessage, index + i * 4));
+                    w[i] = Utility.ReverseBytes(BitConverter.ToUInt32(processedMessage, index + i * 4));
 
                 // Extend the sixteen 32-bit words into eighty 32-bit words
                 for (i = 16; i < 80; i++)
@@ -103,11 +103,11 @@ namespace MicroTweet
 
             // Final output
             byte[] result = new byte[20];
-            Array.Copy(BitConverter.GetBytes(ReverseBytes(h0)), 0, result, 0, 4);
-            Array.Copy(BitConverter.GetBytes(ReverseBytes(h1)), 0, result, 4, 4);
-            Array.Copy(BitConverter.GetBytes(ReverseBytes(h2)), 0, result, 8, 4);
-            Array.Copy(BitConverter.GetBytes(ReverseBytes(h3)), 0, result, 12, 4);
-            Array.Copy(BitConverter.GetBytes(ReverseBytes(h4)), 0, result, 16, 4);
+            Array.Copy(BitConverter.GetBytes(Utility.ReverseBytes(h0)), 0, result, 0, 4);
+            Array.Copy(BitConverter.GetBytes(Utility.ReverseBytes(h1)), 0, result, 4, 4);
+            Array.Copy(BitConverter.GetBytes(Utility.ReverseBytes(h2)), 0, result, 8, 4);
+            Array.Copy(BitConverter.GetBytes(Utility.ReverseBytes(h3)), 0, result, 12, 4);
+            Array.Copy(BitConverter.GetBytes(Utility.ReverseBytes(h4)), 0, result, 16, 4);
 
             return result;
         }
@@ -147,36 +147,6 @@ namespace MicroTweet
             byte[] result = ComputeSHA1(o_key_pad);
 
             return result;
-        }
-
-        /// <summary>
-        /// Converts a uint value between big-endian and little-endian representations.
-        /// </summary>
-        /// <param name="value">The uint value to convert.</param>
-        private static uint ReverseBytes(uint value)
-        {
-            return
-                (value & 0x000000FFu) << 24 |
-                (value & 0x0000FF00u) << 8 |
-                (value & 0x00FF0000u) >> 8 |
-                (value & 0xFF000000u) >> 24;
-        }
-
-        /// <summary>
-        /// Converts a ulong value between big-endian and little-endian representations.
-        /// </summary>
-        /// <param name="value">The ulong value to convert.</param>
-        private static ulong ReverseBytes(ulong value)
-        {
-            return
-                (value & 0x00000000000000FFul) << 56 |
-                (value & 0x000000000000FF00ul) << 40 |
-                (value & 0x0000000000FF0000ul) << 24 |
-                (value & 0x00000000FF000000ul) << 8 |
-                (value & 0x000000FF00000000ul) >> 8 |
-                (value & 0x0000FF0000000000ul) >> 24 |
-                (value & 0x00FF000000000000ul) >> 40 |
-                (value & 0xFF00000000000000ul) >> 56;
         }
 
         /// <summary>

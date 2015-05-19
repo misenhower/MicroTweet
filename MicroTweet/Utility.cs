@@ -140,5 +140,35 @@ namespace MicroTweet
 
             return new string(resultChars);
         }
+
+        /// <summary>
+        /// Converts a uint value between big-endian and little-endian representations.
+        /// </summary>
+        /// <param name="value">The uint value to convert.</param>
+        public static uint ReverseBytes(uint value)
+        {
+            return
+                (value & 0x000000FFu) << 24 |
+                (value & 0x0000FF00u) << 8 |
+                (value & 0x00FF0000u) >> 8 |
+                (value & 0xFF000000u) >> 24;
+        }
+
+        /// <summary>
+        /// Converts a ulong value between big-endian and little-endian representations.
+        /// </summary>
+        /// <param name="value">The ulong value to convert.</param>
+        public static ulong ReverseBytes(ulong value)
+        {
+            return
+                (value & 0x00000000000000FFul) << 56 |
+                (value & 0x000000000000FF00ul) << 40 |
+                (value & 0x0000000000FF0000ul) << 24 |
+                (value & 0x00000000FF000000ul) << 8 |
+                (value & 0x000000FF00000000ul) >> 8 |
+                (value & 0x0000FF0000000000ul) >> 24 |
+                (value & 0x00FF000000000000ul) >> 40 |
+                (value & 0xFF00000000000000ul) >> 56;
+        }
     }
 }
