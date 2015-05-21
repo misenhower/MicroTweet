@@ -34,15 +34,29 @@ namespace SampleApplication
             // Create new Twitter client with these credentials
             var twitter = new TwitterClient(appCredentials, userCredentials);
 
+            // Send a tweet
             try
             {
-                // Send a tweet
                 var tweet = twitter.SendTweet("Trying out MicroTweet!");
                 Debug.Print("Posted tweet with ID: " + tweet.ID);
             }
             catch (Exception e)
             {
                 Debug.Print("Could not send tweet.");
+                Debug.Print(e.ToString());
+            }
+
+            // Get recent tweets from the home timeline
+            try
+            {
+                var tweets = twitter.GetHomeTimeline(10);
+                Debug.Print("Recent tweets from your timeline:");
+                foreach (var tweet in tweets)
+                    Debug.Print("  Tweet from @" + tweet.User.ScreenName + ": \"" + tweet.Text + "\"");
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Could not retrieve timeline.");
                 Debug.Print(e.ToString());
             }
         }
