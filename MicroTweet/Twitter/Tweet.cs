@@ -19,6 +19,7 @@ namespace MicroTweet
             RetweetCount = (int)(long)data["retweet_count"];
             if (data.Contains("favorite_count"))
                 FavoriteCount = (int)(long)data["favorite_count"];
+            User = new User((Hashtable)data["user"]);
         }
 
         /// <summary>
@@ -50,5 +51,10 @@ namespace MicroTweet
         /// Gets the number of times this tweet has been favorited.
         /// </summary>
         public int FavoriteCount { get; private set; }
+
+        /// <summary>
+        /// Gets the user who posted this tweet.
+        /// </summary>
+        public User User { get; private set; }
     }
 }
