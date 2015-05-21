@@ -170,5 +170,48 @@ namespace MicroTweet
                 (value & 0x00FF000000000000ul) >> 40 |
                 (value & 0xFF00000000000000ul) >> 56;
         }
+
+        /// <summary>
+        /// Parses a Twitter date/time string (e.g., "Tue May 19 19:53:49 +0000 2015").
+        /// </summary>
+        /// <param name="value">The string value to parse.</param>
+        public static DateTime ParseTwitterDateTime(string value)
+        {
+            // Year
+            int year = int.Parse(value.Substring(26, 4));
+
+            // Month
+            int month;
+            switch (value.Substring(4, 3))
+            {
+                case "Jan": month = 1; break;
+                case "Feb": month = 2; break;
+                case "Mar": month = 3; break;
+                case "Apr": month = 4; break;
+                case "May": month = 5; break;
+                case "Jun": month = 6; break;
+                case "Jul": month = 7; break;
+                case "Aug": month = 8; break;
+                case "Sep": month = 9; break;
+                case "Oct": month = 10; break;
+                case "Nov": month = 11; break;
+                case "Dec": month = 12; break;
+                default: throw new Exception();
+            }
+
+            // Day
+            int day = int.Parse(value.Substring(8, 2));
+
+            // Hour
+            int hour = int.Parse(value.Substring(11, 2));
+
+            // Minute
+            int minute = int.Parse(value.Substring(14, 2));
+
+            // Second
+            int second = int.Parse(value.Substring(17, 2));
+
+            return new DateTime(year, month, day, hour, minute, second);
+        }
     }
 }
