@@ -151,5 +151,32 @@ namespace MicroTweet
 
             throw new TwitterException(response.StatusCode, response.ResponseBody);
         }
+
+        /// <summary>
+        /// Returns a collection of the most recent tweets and retweets posted by the authenticating user and the user they follow.
+        /// </summary>
+        /// <param name="count">The maximum number of tweets to retrieve. Must be less than or equal to 200.</param>
+        public Tweet[] GetHomeTimeline(int count = 20)
+        {
+            var parameters = new QueryParameter[] { new QueryParameter("count", count.ToString()) };
+
+            var response = SubmitRequest("GET", "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var data = Json.Parse(response.ResponseBody);
+                ArrayList tweetList = data as ArrayList;
+                if (tweetList != null)
+                {
+                    // Parse tweets
+                    Tweet[] tweets = new Tweet[tweetList.Count];
+                    for (int i = 0; i < tweetList.Count; i++)
+                        tweets[i] = new Tweet((Hashtable)tweetList[i]);
+
+                    return tweets;
+                }
+            }
+
+            throw new TwitterException(response.StatusCode, response.ResponseBody);
+        }
     }
 }
