@@ -138,17 +138,22 @@ namespace MicroTweet
         /// </summary>
         /// <param name="message">The message content to post.</param>
         /// <returns>true if the tweet was posted successfully, otherwise false.</returns>
-        public bool SendTweet(string message)
+        public Tweet SendTweet(string message)
         {
             var parameters = new QueryParameter[] { new QueryParameter("status", message) };
+
             try
             {
                 var response = SubmitRequest("POST", "https://api.twitter.com/1.1/statuses/update.json", parameters);
                 if (response.StatusCode == HttpStatusCode.OK)
-                    return true;
+                {
+                    var data = Json.Parse(response.ResponseBody);
+                    return new Tweet((Hashtable)data);
+                }
             }
             catch { }
-            return false;
+
+            return null;
         }
     }
 }
