@@ -31,7 +31,12 @@ namespace MicroTweet
             }
 
             // Get the OAuth signature
-            string oauthSignature = GenerateOAuthSignature(webRequest.Method, webRequest.RequestUri.AbsoluteUri, allParameters, applicationCredentials, userCredentials);
+            // For GET requests, we need only the base URI (without the query string)
+            string uri = webRequest.RequestUri.AbsoluteUri;
+            int queryStringIndex = uri.IndexOf('?');
+            if (queryStringIndex >= 0)
+                uri = uri.Substring(0, queryStringIndex);
+            string oauthSignature = GenerateOAuthSignature(webRequest.Method, uri, allParameters, applicationCredentials, userCredentials);
 
             // Add the signature to the OAuth parameters
             oauthParameters.Add(new QueryParameter("oauth_signature", oauthSignature));
