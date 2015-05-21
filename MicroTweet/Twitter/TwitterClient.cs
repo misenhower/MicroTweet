@@ -110,7 +110,7 @@ namespace MicroTweet
                     }
 
                     // Convert the response to a string
-                    twitterResponse.ResponseBody = new string(Encoding.UTF8.GetChars(responseBytes));
+                    twitterResponse.ResponseBody = Encoding.UTF8.GetChars(responseBytes);
 
                     return twitterResponse;
                 }
@@ -130,7 +130,7 @@ namespace MicroTweet
             /// <summary>
             /// Gets the body of the response.
             /// </summary>
-            public string ResponseBody { get; set; }
+            public char[] ResponseBody { get; set; }
         }
 
         /// <summary>

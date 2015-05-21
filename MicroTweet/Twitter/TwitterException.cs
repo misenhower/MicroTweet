@@ -11,6 +11,11 @@ namespace MicroTweet
     public class TwitterException : Exception
     {
         internal TwitterException(HttpStatusCode statusCode, string response)
+            : this(statusCode, response.ToCharArray())
+        {
+        }
+
+        internal TwitterException(HttpStatusCode statusCode, char[] response)
         {
             _statusCode = statusCode;
 

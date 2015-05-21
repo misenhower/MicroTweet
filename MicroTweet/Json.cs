@@ -15,6 +15,16 @@ namespace MicroTweet
         /// <returns>The decoded root object.</returns>
         public static object Parse(string input)
         {
+            return Parse(input.ToCharArray());
+        }
+
+        /// <summary>
+        /// Parses a JSON-encoded character array into a collection of Hashtables, ArrayLists, and values.
+        /// </summary>
+        /// <param name="input">The JSON-encoded character array to parse.</param>
+        /// <returns>The decoded root object.</returns>
+        public static object Parse(char[] input)
+        {
             object result;
             TryParse(input, out result, true);
             return result;
@@ -28,17 +38,26 @@ namespace MicroTweet
         /// <returns>true is parsing was successful; otherwise, false.</returns>
         public static bool TryParse(string input, out object result)
         {
+            return TryParse(input.ToCharArray(), out result);
+        }
+
+        /// <summary>
+        /// Attempts to parse a JSON-encoded character array into a collection of Hashtables, ArrayLists, and values.
+        /// </summary>
+        /// <param name="input">The JSON-encoded character array to parse.</param>
+        /// <param name="result">Returns the decoded root object.</param>
+        /// <returns>true is parsing was successful; otherwise, false.</returns>
+        public static bool TryParse(char[] input, out object result)
+        {
             return TryParse(input, out result, false);
         }
 
-        private static bool TryParse(string input, out object result, bool throwIfError)
+        private static bool TryParse(char[] input, out object result, bool throwIfError)
         {
-            // Convert the string to an array of chars
-            char[] inputArray = input.ToCharArray();
             int index = 0;
 
             // Attempt to parse the root value
-            bool success = TryParseValue(inputArray, ref index, out result);
+            bool success = TryParseValue(input, ref index, out result);
 
             // Throw an exception if necessary
             if (!success && throwIfError)
