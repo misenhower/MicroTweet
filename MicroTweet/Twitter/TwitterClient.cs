@@ -97,7 +97,17 @@ namespace MicroTweet
 
                     // Set up a response buffer and read in the response
                     byte[] responseBytes = new byte[(int)response.ContentLength];
-                    responseStream.Read(responseBytes, 0, responseBytes.Length);
+
+                    int index = 0;
+                    int count = 100;
+                    while (true)
+                    {
+                        index += responseStream.Read(responseBytes, index, count);
+                        if (responseBytes.Length - index < count)
+                            count = responseBytes.Length - index;
+                        if (count <= 0)
+                            break;
+                    }
 
                     // Convert the response to a string
                     twitterResponse.ResponseBody = new string(Encoding.UTF8.GetChars(responseBytes));
