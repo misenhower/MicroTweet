@@ -142,18 +142,14 @@ namespace MicroTweet
         {
             var parameters = new QueryParameter[] { new QueryParameter("status", message) };
 
-            try
+            var response = SubmitRequest("POST", "https://api.twitter.com/1.1/statuses/update.json", parameters);
+            if (response.StatusCode == HttpStatusCode.OK)
             {
-                var response = SubmitRequest("POST", "https://api.twitter.com/1.1/statuses/update.json", parameters);
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    var data = Json.Parse(response.ResponseBody);
-                    return new Tweet((Hashtable)data);
-                }
+                var data = Json.Parse(response.ResponseBody);
+                return new Tweet((Hashtable)data);
             }
-            catch { }
 
-            return null;
+            throw new TwitterException(response.StatusCode, response.ResponseBody);
         }
     }
 }

@@ -34,13 +34,17 @@ namespace SampleApplication
             // Create new Twitter client with these credentials
             var twitter = new TwitterClient(appCredentials, userCredentials);
 
-            // Send a tweet
-            var tweet = twitter.SendTweet("Trying out MicroTweet!");
-
-            if (tweet != null)
+            try
+            {
+                // Send a tweet
+                var tweet = twitter.SendTweet("Trying out MicroTweet!");
                 Debug.Print("Posted tweet with ID: " + tweet.ID);
-            else
+            }
+            catch (Exception e)
+            {
                 Debug.Print("Could not send tweet.");
+                Debug.Print(e.ToString());
+            }
         }
     }
 }

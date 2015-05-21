@@ -41,6 +41,7 @@
     <Compile Include="Sntp.cs" />
     <Compile Include="Twitter\Tweet.cs" />
     <Compile Include="Twitter\TwitterClient.cs" />
+    <Compile Include="Twitter\TwitterException.cs" />
     <Compile Include="Twitter\User.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
