@@ -35,7 +35,12 @@ namespace SampleApplication
             var twitter = new TwitterClient(appCredentials, userCredentials);
 
             // Send a tweet
-            twitter.SendTweet("Trying out MicroTweet!");
+            var tweet = twitter.SendTweet("Trying out MicroTweet!");
+
+            if (tweet != null)
+                Debug.Print("Posted tweet with ID: " + tweet.ID);
+            else
+                Debug.Print("Could not send tweet.");
         }
     }
 }
