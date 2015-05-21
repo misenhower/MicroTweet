@@ -1,6 +1,7 @@
 using System;
 using Microsoft.SPOT;
 using System.Collections;
+using System.Text;
 
 namespace MicroTweet
 {
@@ -41,41 +42,36 @@ namespace MicroTweet
             if (value == null)
                 return null;
 
-            string result = string.Empty;
-
-            char c;
-            bool encodeChar;
-            for (int i = 0; i < value.Length; i++)
+            StringBuilder sb = new StringBuilder();
+            byte[] bytes = Encoding.UTF8.GetBytes(value);
+            byte b;
+            bool encodeByte;
+            for (int i = 0; i < bytes.Length; i++)
             {
-                c = value[i];
+                b = bytes[i];
 
-                // Do we need to encode this character?
-                encodeChar = true;
+                // Do we need to encode this byte?
+                encodeByte = true;
 
                 // Safe characters defined by RFC3986: http://oauth.net/core/1.0/#encoding_parameters
-                if (c >= '0' && c <= '9')
-                    encodeChar = false;
-                if (c >= 'A' && c <= 'Z')
-                    encodeChar = false;
-                if (c >= 'a' && c <= 'z')
-                    encodeChar = false;
-                switch (c)
-                {
-                    case '-':
-                    case '.':
-                    case '_':
-                    case '~':
-                        encodeChar = false;
-                        break;
-                }
+                if ((b >= '0' && b <= '9') ||
+                    (b >= 'A' && b <= 'Z') ||
+                    (b >= 'a' && b <= 'z') ||
+                    b == '-' || b == '.' || b == '_' || b == '~')
+                    encodeByte = false;
 
-                if (encodeChar)
-                    result += '%' + ((byte)c).ToString("X2");
+                if (encodeByte)
+                {
+                    sb.Append('%');
+                    sb.Append(b.ToString("X2"));
+                }
                 else
-                    result += value[i];
+                {
+                    sb.Append((char)b);
+                }
             }
 
-            return result;
+            return sb.ToString();
         }
 
         /// <summary>
