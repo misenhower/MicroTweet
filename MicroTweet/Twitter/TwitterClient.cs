@@ -163,17 +163,8 @@ namespace MicroTweet
             var response = SubmitRequest("GET", "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var data = Json.Parse(response.ResponseBody);
-                ArrayList tweetList = data as ArrayList;
-                if (tweetList != null)
-                {
-                    // Parse tweets
-                    Tweet[] tweets = new Tweet[tweetList.Count];
-                    for (int i = 0; i < tweetList.Count; i++)
-                        tweets[i] = new Tweet((Hashtable)tweetList[i]);
-
-                    return tweets;
-                }
+                var tweetList = Json.ParseArrayToObjects(response.ResponseBody, o => new Tweet((Hashtable)o));
+                return (Tweet[])tweetList.ToArray(typeof(Tweet));
             }
 
             throw new TwitterException(response.StatusCode, response.ResponseBody);

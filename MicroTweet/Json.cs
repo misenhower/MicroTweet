@@ -5,6 +5,8 @@ using System.Text;
 
 namespace MicroTweet
 {
+    internal delegate object ObjectCreationFunction(object o);
+
     // JSON reference: http://json.org/
     internal static class Json
     {
@@ -68,6 +70,46 @@ namespace MicroTweet
         }
 
         /// <summary>
+        /// Parses a JSON-encoded array into a collection of objects created with the specified delegate.
+        /// </summary>
+        /// <param name="input">The JSON-encoded character array to parse.</param>
+        /// <param name="func">The delegate method used to create objects from the JSON array's contents.</param>
+        /// <returns>A list of decoded objects.</returns>
+        public static ArrayList ParseArrayToObjects(char[] input, ObjectCreationFunction func)
+        {
+            ArrayList result;
+            TryParseArrayToObjects(input, func, out result, true);
+            return result;
+        }
+
+        /// <summary>
+        /// Attempts to parse a JSON-encoded array into a collection of objects created with the specified delegate.
+        /// </summary>
+        /// <param name="input">The JSON-encoded character array to parse.</param>
+        /// <param name="func">The delegate method used to create objects from the JSON array's contents.</param>
+        /// <param name="result">Returns the list of decoded objects.</param>
+        /// <returns>true if parsing was successful; otherwise, false.</returns>
+        public static bool TryParseArrayToObjects(char[] input, ObjectCreationFunction func, out ArrayList result)
+        {
+            return TryParseArrayToObjects(input, func, out result, false);
+        }
+
+        private static bool TryParseArrayToObjects(char[] input, ObjectCreationFunction func, out ArrayList result, bool throwIfError)
+        {
+            int index = 0;
+
+            object obj;
+            bool success = TryParseArray(input, ref index, func, out obj);
+            result = obj as ArrayList;
+
+            if (throwIfError && (!success || result == null))
+                throw new Exception("JSON parse error at index " + index);
+
+            // Done
+            return success;
+        }
+
+        /// <summary>
         /// Skips ahead to the next non-whitespace character.
         /// </summary>
         private static void SkipWhitespace(char[] input, ref int index)
@@ -108,7 +150,7 @@ namespace MicroTweet
                 case '{': // Object
                     return TryParseObject(input, ref index, out result);
                 case '[': // Array
-                    return TryParseArray(input, ref index, out result);
+                    return TryParseArray(input, ref index, null, out result);
                 case '"': // String
                     return TryParseString(input, ref index, out result);
                 case 't': // true
@@ -201,7 +243,7 @@ namespace MicroTweet
         /// <summary>
         /// Attempts to parse a JSON array starting at the specified index.
         /// </summary>
-        private static bool TryParseArray(char[] input, ref int index, out object result)
+        private static bool TryParseArray(char[] input, ref int index, ObjectCreationFunction func, out object result)
         {
             if (input[index++] != '[')
             {
@@ -230,7 +272,10 @@ namespace MicroTweet
                     break;
 
                 // Success, add it to the list
-                arrayList.Add(value);
+                if (func == null)
+                    arrayList.Add(value);
+                else
+                    arrayList.Add(func(value));
 
                 // Skip ahead to the next non-whitespace character
                 SkipWhitespace(input, ref index);
