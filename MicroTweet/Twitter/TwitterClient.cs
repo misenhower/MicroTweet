@@ -188,6 +188,38 @@ namespace MicroTweet
         }
 
         /// <summary>
+        /// Returns account details for the specified user.
+        /// </summary>
+        /// <param name="screenName">The screen name of the user for whom to return results for (e.g., "twitter").</param>
+        public User GetUser(string screenName)
+        {
+            return GetUser("screen_name", screenName);
+        }
+
+        /// <summary>
+        /// Returns account details for the specified user.
+        /// </summary>
+        /// <param name="id">The ID of the user for whom to return results for.</param>
+        public User GetUser(long id)
+        {
+            return GetUser("user_id", id.ToString());
+        }
+
+        private User GetUser(string parameterName, string parameterValue)
+        {
+            var parameters = new QueryParameter[] { new QueryParameter(parameterName, parameterValue) };
+
+            var response = SubmitRequest("GET", "https://api.twitter.com/1.1/users/show.json", parameters);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var data = Json.Parse(response.ResponseBody);
+                return new User((Hashtable)data);
+            }
+
+            throw new TwitterException(response.StatusCode, response.ResponseBody);
+        }
+
+        /// <summary>
         /// Returns a collection of the most recent tweets and retweets posted by the specified user.
         /// </summary>
         /// <param name="screenName">The screen name of the user for whom to return results for (e.g., "twitter").</param>
