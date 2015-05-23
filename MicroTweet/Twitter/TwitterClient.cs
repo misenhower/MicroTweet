@@ -134,6 +134,23 @@ namespace MicroTweet
         }
 
         /// <summary>
+        /// Verifies that the supplied user credentials are valid and returns the authenticated user's account information.
+        /// </summary>
+        public User VerifyCredentials()
+        {
+            var parameters = new QueryParameter[] { new QueryParameter("skip_status", "true") };
+
+            var response = SubmitRequest("GET", "https://api.twitter.com/1.1/account/verify_credentials.json", parameters);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var data = Json.Parse(response.ResponseBody);
+                return new User((Hashtable)data);
+            }
+
+            throw new TwitterException(response.StatusCode, response.ResponseBody);
+        }
+
+        /// <summary>
         /// Posts a tweet to the authenticating user's timeline.
         /// </summary>
         /// <param name="message">The message content to post.</param>
