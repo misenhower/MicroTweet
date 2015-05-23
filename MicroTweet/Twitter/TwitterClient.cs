@@ -137,7 +137,7 @@ namespace MicroTweet
         /// Posts a tweet to the authenticating user's timeline.
         /// </summary>
         /// <param name="message">The message content to post.</param>
-        /// <returns>true if the tweet was posted successfully, otherwise false.</returns>
+        /// <returns>true if the tweet was posted successfully; otherwise, false.</returns>
         public Tweet SendTweet(string message)
         {
             var parameters = new QueryParameter[] { new QueryParameter("status", message) };
@@ -153,7 +153,7 @@ namespace MicroTweet
         }
 
         /// <summary>
-        /// Returns a collection of the most recent tweets and retweets posted by the authenticating user and the user they follow.
+        /// Returns a collection of the most recent tweets and retweets posted by the authenticating user and the users they follow.
         /// </summary>
         /// <param name="count">The maximum number of tweets to retrieve. Must be less than or equal to 200.</param>
         public IEnumerable GetHomeTimeline(int count = 5)
