@@ -49,9 +49,9 @@ namespace SampleApplication
             // Get recent tweets from the home timeline
             try
             {
-                var tweets = twitter.GetHomeTimeline(10);
+                var tweets = twitter.GetHomeTimeline(5);
                 Debug.Print("Recent tweets from your timeline:");
-                foreach (var tweet in tweets)
+                foreach (Tweet tweet in tweets)
                     Debug.Print("  Tweet from @" + tweet.User.ScreenName + ": \"" + tweet.Text + "\"");
             }
             catch (Exception e)

@@ -156,7 +156,7 @@ namespace MicroTweet
         /// Returns a collection of the most recent tweets and retweets posted by the authenticating user and the user they follow.
         /// </summary>
         /// <param name="count">The maximum number of tweets to retrieve. Must be less than or equal to 200.</param>
-        public Tweet[] GetHomeTimeline(int count = 20)
+        public IEnumerable GetHomeTimeline(int count = 5)
         {
             var parameters = new QueryParameter[] { new QueryParameter("count", count.ToString()) };
 
