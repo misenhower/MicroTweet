@@ -27,14 +27,32 @@ namespace MicroTweet
                 Description = (string)data["description"];
             if (data.Contains("location"))
                 Location = (string)data["location"];
-            if (data.Contains("url"))
-                URL = (string)data["url"];
             if (data.Contains("followers_count"))
                 FollowerCount = (int)(long)data["followers_count"];
             if (data.Contains("friends_count"))
                 FollowingCount = (int)(long)data["friends_count"];
             if (data.Contains("statuses_count"))
                 TweetCount = (int)(long)data["statuses_count"];
+
+            // Attempt to find the user's actual URL
+            // (The user entity has a "url" property but it only returns t.co links)
+            var entities = data["entities"] as Hashtable;
+            if (entities != null)
+            {
+                var url = entities["url"] as Hashtable;
+                if (url != null)
+                {
+                    var urls = url["urls"] as ArrayList;
+                    if (urls != null && urls.Count > 0)
+                    {
+                        var userUrl = urls[0] as Hashtable;
+                        if (userUrl != null)
+                        {
+                            URL = userUrl["expanded_url"] as string;
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
