@@ -169,5 +169,43 @@ namespace MicroTweet
 
             throw new TwitterException(response.StatusCode, response.ResponseBody);
         }
+
+        /// <summary>
+        /// Returns a collection of the most recent tweets and retweets posted by the specified user.
+        /// </summary>
+        /// <param name="screenName">The screen name of the user for whom to return results for (e.g., "twitter").</param>
+        /// <param name="count">The maximum number of tweets to retrieve. Must be less than or equal to 200.</param>
+        public IEnumerable GetUserTimeline(string screenName, int count = 5)
+        {
+            return GetUserTimeline("screen_name", screenName, count);
+        }
+
+        /// <summary>
+        /// Returns a collection of the most recent tweets and retweets posted by the specified user.
+        /// </summary>
+        /// <param name="id">The ID of the user for whom to return results for.</param>
+        /// <param name="count">The maximum number of tweets to retrieve. Must be less than or equal to 200.</param>
+        public IEnumerable GetUserTimeline(long id, int count = 5)
+        {
+            return GetUserTimeline("user_id", id.ToString(), count);
+        }
+
+        private IEnumerable GetUserTimeline(string parameterName, string parameterValue, int count)
+        {
+            var parameters = new QueryParameter[]
+            { 
+                new QueryParameter(parameterName, parameterValue),
+                new QueryParameter("count", count.ToString()),
+            };
+
+            var response = SubmitRequest("GET", "https://api.twitter.com/1.1/statuses/user_timeline.json", parameters);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var tweetList = Json.ParseArrayToObjects(response.ResponseBody, o => new Tweet((Hashtable)o));
+                return (Tweet[])tweetList.ToArray(typeof(Tweet));
+            }
+
+            throw new TwitterException(response.StatusCode, response.ResponseBody);
+        }
     }
 }
