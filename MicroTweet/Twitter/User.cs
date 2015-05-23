@@ -29,6 +29,8 @@ namespace MicroTweet
                 FollowerCount = (int)(long)data["followers_count"];
             if (data.Contains("friends_count"))
                 FollowingCount = (int)(long)data["friends_count"];
+            if (data.Contains("statuses_count"))
+                TweetCount = (int)(long)data["statuses_count"];
         }
 
         /// <summary>
