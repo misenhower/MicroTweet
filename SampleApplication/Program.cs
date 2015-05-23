@@ -34,11 +34,23 @@ namespace SampleApplication
             // Create new Twitter client with these credentials
             var twitter = new TwitterClient(appCredentials, userCredentials);
 
+            // Verify the credentials and get the current user's account info
+            try
+            {
+                var currentUser = twitter.VerifyCredentials();
+                Debug.Print("Authenticated user account: @" + currentUser.ScreenName);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Could not verify account credentials.");
+                Debug.Print(e.ToString());
+            }
+
             // Send a tweet
             try
             {
                 var tweet = twitter.SendTweet("Trying out MicroTweet!");
-                Debug.Print("Posted tweet with ID: " + tweet.ID);
+                Debug.Print("Posted a new tweet with ID: " + tweet.ID);
             }
             catch (Exception e)
             {
