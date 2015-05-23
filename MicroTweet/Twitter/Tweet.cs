@@ -9,8 +9,12 @@ namespace MicroTweet
     /// </summary>
     public class Tweet
     {
-        internal Tweet(Hashtable data)
+        private readonly TwitterClient _client;
+
+        internal Tweet(TwitterClient client, Hashtable data)
         {
+            _client = client;
+
             bool isRetweet = false;
             Hashtable tweetData = data;
             if (data.Contains("retweeted_status"))
@@ -27,13 +31,13 @@ namespace MicroTweet
             RetweetCount = (int)(long)tweetData["retweet_count"];
             if (data.Contains("favorite_count"))
                 FavoriteCount = (int)(long)tweetData["favorite_count"];
-            User = new User((Hashtable)tweetData["user"]);
+            User = new User(_client, (Hashtable)tweetData["user"]);
 
             if (isRetweet)
             {
                 IsRetweet = true;
                 RetweetedAt = Utility.ParseTwitterDateTime((string)data["created_at"]);
-                RetweetedByUser = new User((Hashtable)data["user"]);
+                RetweetedByUser = new User(_client, (Hashtable)data["user"]);
             }
         }
 

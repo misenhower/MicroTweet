@@ -9,8 +9,12 @@ namespace MicroTweet
     /// </summary>
     public class User
     {
-        internal User(Hashtable data)
+        private readonly TwitterClient _client;
+
+        internal User(TwitterClient client, Hashtable data)
         {
+            _client = client;
+
             // Fill property values with the data we received
             ID = (long)data["id"];
             if (data.Contains("created_at"))
@@ -82,5 +86,14 @@ namespace MicroTweet
         /// Gets the number of tweets (including retweets) issued by the user.
         /// </summary>
         public int TweetCount { get; private set; }
+
+        /// <summary>
+        /// Returns a collection of the most recent tweets and retweets posted by this user.
+        /// </summary>
+        /// <param name="count">The maximum number of tweets to retrieve. Must be less than or equal to 200.</param>
+        public IEnumerable GetTimeline(int count = 5)
+        {
+            return _client.GetUserTimeline(ID, count);
+        }
     }
 }

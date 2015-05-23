@@ -144,7 +144,7 @@ namespace MicroTweet
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var data = Json.Parse(response.ResponseBody);
-                return new User((Hashtable)data);
+                return new User(this, (Hashtable)data);
             }
 
             throw new TwitterException(response.StatusCode, response.ResponseBody);
@@ -163,7 +163,7 @@ namespace MicroTweet
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var data = Json.Parse(response.ResponseBody);
-                return new Tweet((Hashtable)data);
+                return new Tweet(this, (Hashtable)data);
             }
 
             throw new TwitterException(response.StatusCode, response.ResponseBody);
@@ -180,7 +180,7 @@ namespace MicroTweet
             var response = SubmitRequest("GET", "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var tweetList = Json.ParseArrayToObjects(response.ResponseBody, o => new Tweet((Hashtable)o));
+                var tweetList = Json.ParseArrayToObjects(response.ResponseBody, o => new Tweet(this, (Hashtable)o));
                 return (Tweet[])tweetList.ToArray(typeof(Tweet));
             }
 
@@ -213,7 +213,7 @@ namespace MicroTweet
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var data = Json.Parse(response.ResponseBody);
-                return new User((Hashtable)data);
+                return new User(this, (Hashtable)data);
             }
 
             throw new TwitterException(response.StatusCode, response.ResponseBody);
@@ -250,7 +250,7 @@ namespace MicroTweet
             var response = SubmitRequest("GET", "https://api.twitter.com/1.1/statuses/user_timeline.json", parameters);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var tweetList = Json.ParseArrayToObjects(response.ResponseBody, o => new Tweet((Hashtable)o));
+                var tweetList = Json.ParseArrayToObjects(response.ResponseBody, o => new Tweet(this, (Hashtable)o));
                 return (Tweet[])tweetList.ToArray(typeof(Tweet));
             }
 
