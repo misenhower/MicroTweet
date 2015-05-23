@@ -59,6 +59,20 @@ namespace SampleApplication
                 Debug.Print("Could not retrieve timeline.");
                 Debug.Print(e.ToString());
             }
+
+            // Get recent tweets from a specific user
+            try
+            {
+                var tweets = twitter.GetUserTimeline("twitter");
+                Debug.Print("Recent tweets from @twitter's timeline:");
+                foreach (Tweet tweet in tweets)
+                    Debug.Print("  Tweet from @" + tweet.User.ScreenName + ": \"" + tweet.Text + "\"");
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Could not retrieve timeline.");
+                Debug.Print(e.ToString());
+            }
         }
     }
 }
