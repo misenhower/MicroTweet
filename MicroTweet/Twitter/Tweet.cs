@@ -11,21 +11,41 @@ namespace MicroTweet
     {
         internal Tweet(Hashtable data)
         {
+            bool isRetweet = false;
+            Hashtable tweetData = data;
+            if (data.Contains("retweeted_status"))
+            {
+                isRetweet = true;
+                tweetData = (Hashtable)data["retweeted_status"];
+            }
+
             // Fill property values with the data we received
-            ID = (long)data["id"];
-            Text = (string)data["text"];
-            CreatedAt = Utility.ParseTwitterDateTime((string)data["created_at"]);
-            Source = (string)data["source"];
-            RetweetCount = (int)(long)data["retweet_count"];
+            ID = (long)tweetData["id"];
+            Text = (string)tweetData["text"];
+            CreatedAt = Utility.ParseTwitterDateTime((string)tweetData["created_at"]);
+            Source = (string)tweetData["source"];
+            RetweetCount = (int)(long)tweetData["retweet_count"];
             if (data.Contains("favorite_count"))
-                FavoriteCount = (int)(long)data["favorite_count"];
-            User = new User((Hashtable)data["user"]);
+                FavoriteCount = (int)(long)tweetData["favorite_count"];
+            User = new User((Hashtable)tweetData["user"]);
+
+            if (isRetweet)
+            {
+                IsRetweet = true;
+                RetweetedAt = Utility.ParseTwitterDateTime((string)data["created_at"]);
+                RetweetedByUser = new User((Hashtable)data["user"]);
+            }
         }
 
         /// <summary>
         /// Gets the ID of the tweet.
         /// </summary>
         public long ID { get; private set; }
+
+        /// <summary>
+        /// Gets a value that indicates whether this is a retweet.
+        /// </summary>
+        public bool IsRetweet { get; private set; }
 
         /// <summary>
         /// Gets the content of the tweet, e.g., "just setting up my twttr".
@@ -36,6 +56,11 @@ namespace MicroTweet
         /// Gets the date/time the tweet was posted.
         /// </summary>
         public DateTime CreatedAt { get; private set; }
+
+        /// <summary>
+        /// If this is a retweet, gets the date/time the tweet was retweeted.
+        /// </summary>
+        public DateTime RetweetedAt { get; private set; }
 
         /// <summary>
         /// Gets the source of the tweet as an HTML anchor tag, e.g., "&lt;a href=\"http://twitter.com\" rel=\"nofollow\"&gt;Twitter Web Client&lt;/a&gt;".
@@ -56,5 +81,10 @@ namespace MicroTweet
         /// Gets the user who posted this tweet.
         /// </summary>
         public User User { get; private set; }
+
+        /// <summary>
+        /// If this is a retweet, gets the user who retweeted this tweet.
+        /// </summary>
+        public User RetweetedByUser { get; private set; }
     }
 }
