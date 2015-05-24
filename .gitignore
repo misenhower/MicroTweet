@@ -191,3 +191,6 @@ ModelManifest.xml
 # NETMF Emulator
 OnBoardFlash.dat
 OnBoardFlash.dat.smd
+
+# NuGet Package Output
+*.nupkg

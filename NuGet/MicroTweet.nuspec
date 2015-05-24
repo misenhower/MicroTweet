@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>MicroTweet</id>
+    <version>2.0.0.0</version>
+    <title>MicroTweet - Twitter API Library for the .NET Micro Framework</title>
+    <summary>A Twitter OAuth API library for the .NET Micro Framework</summary>
+    <description>A Twitter OAuth API library for the .NET Micro Framework. Requires NETMF v4.3 and a board that supports SSL.</description>
+    <authors>Matt Isenhower</authors>
+    <projectUrl>https://github.com/misenhower/MicroTweet</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>NETMF Twitter</tags>
+  </metadata>
+  <files>
+    <file src="..\MicroTweet\bin\Release\MicroTweet.dll" target="lib/netmf43/" />
+    <file src="..\MicroTweet\bin\Release\MicroTweet.pdb" target="lib/netmf43/" />
+    <file src="..\MicroTweet\bin\Release\MicroTweet.xml" target="lib/netmf43/" />
+    <file src="..\MicroTweet\bin\Release\be\MicroTweet.dll" target="lib/netmf43/be/" />
+    <file src="..\MicroTweet\bin\Release\be\MicroTweet.pdb" target="lib/netmf43/be/" />
+    <file src="..\MicroTweet\bin\Release\be\MicroTweet.pdbx" target="lib/netmf43/be/" />
+    <file src="..\MicroTweet\bin\Release\be\MicroTweet.pe" target="lib/netmf43/be/" />
+    <file src="..\MicroTweet\bin\Release\le\MicroTweet.dll" target="lib/netmf43/le/" />
+    <file src="..\MicroTweet\bin\Release\le\MicroTweet.pdb" target="lib/netmf43/le/" />
+    <file src="..\MicroTweet\bin\Release\le\MicroTweet.pdbx" target="lib/netmf43/le/" />
+    <file src="..\MicroTweet\bin\Release\le\MicroTweet.pe" target="lib/netmf43/le/" />
+  </files>
+</package>
