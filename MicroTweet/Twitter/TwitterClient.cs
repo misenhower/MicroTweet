@@ -134,9 +134,9 @@ namespace MicroTweet
         }
 
         /// <summary>
-        /// Verifies that the supplied user credentials are valid and returns the authenticated user's account information.
+        /// Verifies that the supplied user credentials are valid and returns the authenticating user's account information.
         /// </summary>
-        public User VerifyCredentials()
+        public User GetCurrentUser()
         {
             var parameters = new QueryParameter[] { new QueryParameter("skip_status", "true") };
 

@@ -37,7 +37,7 @@ namespace SampleApplication
             // Verify the credentials and get the current user's account info
             try
             {
-                var currentUser = twitter.VerifyCredentials();
+                var currentUser = twitter.GetCurrentUser();
                 Debug.Print("Authenticated user account: @" + currentUser.ScreenName);
             }
             catch (Exception e)
