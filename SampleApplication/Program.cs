@@ -49,7 +49,7 @@ namespace SampleApplication
             // Send a tweet
             try
             {
-                var tweet = twitter.SendTweet("Trying out MicroTweet!");
+                var tweet = twitter.SendTweet("Trying out MicroTweet! #netmf");
                 Debug.Print("Posted a new tweet with ID: " + tweet.ID);
             }
             catch (Exception e)
