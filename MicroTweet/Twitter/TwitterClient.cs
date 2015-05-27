@@ -231,9 +231,11 @@ namespace MicroTweet
         /// </summary>
         /// <param name="screenName">The screen name of the user for whom to return results for (e.g., "twitter").</param>
         /// <param name="count">The maximum number of tweets to retrieve. Must be less than or equal to 200.</param>
-        public IEnumerable GetUserTimeline(string screenName, int count = 5)
+        /// <param name="sinceID">If specified, returns results with an ID greater than (that is, more recent than) the specified ID.</param>
+        /// <param name="maxID">If specified, returns results with an ID less than (that is, older than) or equal to the specified ID.</param>
+        public IEnumerable GetUserTimeline(string screenName, int count = 5, long sinceID = -1, long maxID = -1)
         {
-            return GetUserTimeline("screen_name", screenName, count);
+            return GetUserTimeline("screen_name", screenName, count, sinceID, maxID);
         }
 
         /// <summary>
@@ -241,18 +243,22 @@ namespace MicroTweet
         /// </summary>
         /// <param name="id">The ID of the user for whom to return results for.</param>
         /// <param name="count">The maximum number of tweets to retrieve. Must be less than or equal to 200.</param>
-        public IEnumerable GetUserTimeline(long id, int count = 5)
+        /// <param name="sinceID">If specified, returns results with an ID greater than (that is, more recent than) the specified ID.</param>
+        /// <param name="maxID">If specified, returns results with an ID less than (that is, older than) or equal to the specified ID.</param>
+        public IEnumerable GetUserTimeline(long id, int count = 5, long sinceID = -1, long maxID = -1)
         {
-            return GetUserTimeline("user_id", id.ToString(), count);
+            return GetUserTimeline("user_id", id.ToString(), count, sinceID, maxID);
         }
 
-        private IEnumerable GetUserTimeline(string parameterName, string parameterValue, int count)
+        private IEnumerable GetUserTimeline(string parameterName, string parameterValue, int count, long sinceID, long maxID)
         {
-            var parameters = new QueryParameter[]
-            { 
-                new QueryParameter(parameterName, parameterValue),
-                new QueryParameter("count", count.ToString()),
-            };
+            var parameters = new ArrayList();
+            parameters.Add(new QueryParameter(parameterName, parameterValue));
+            parameters.Add(new QueryParameter("count", count.ToString()));
+            if (sinceID >= 0)
+                parameters.Add(new QueryParameter("since_id", sinceID.ToString()));
+            if (maxID >= 0)
+                parameters.Add(new QueryParameter("max_id", maxID.ToString()));
 
             var response = SubmitRequest("GET", "https://api.twitter.com/1.1/statuses/user_timeline.json", parameters);
             if (response.StatusCode == HttpStatusCode.OK)
