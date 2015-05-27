@@ -173,9 +173,16 @@ namespace MicroTweet
         /// Returns a collection of the most recent tweets and retweets posted by the authenticating user and the users they follow.
         /// </summary>
         /// <param name="count">The maximum number of tweets to retrieve. Must be less than or equal to 200.</param>
-        public IEnumerable GetHomeTimeline(int count = 5)
+        /// <param name="sinceID">If specified, returns results with an ID greater than (that is, more recent than) the specified ID.</param>
+        /// <param name="maxID">If specified, returns results with an ID less than (that is, older than) or equal to the specified ID.</param>
+        public IEnumerable GetHomeTimeline(int count = 5, long sinceID = -1, long maxID = -1)
         {
-            var parameters = new QueryParameter[] { new QueryParameter("count", count.ToString()) };
+            var parameters = new ArrayList();
+            parameters.Add(new QueryParameter("count", count.ToString()));
+            if (sinceID >= 0)
+                parameters.Add(new QueryParameter("since_id", sinceID.ToString()));
+            if (maxID >= 0)
+                parameters.Add(new QueryParameter("max_id", maxID.ToString()));
 
             var response = SubmitRequest("GET", "https://api.twitter.com/1.1/statuses/home_timeline.json", parameters);
             if (response.StatusCode == HttpStatusCode.OK)
