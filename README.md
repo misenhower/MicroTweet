@@ -86,6 +86,13 @@ catch (Exception e)
 }
 ```
 
+`GetHomeTimeline` accepts two arguments, `sinceID` and `maxID`, to specify the range of tweets to retrieve.
+You may want to use [named arguments](https://msdn.microsoft.com/en-us/library/dd264739.aspx) to specify these values.
+For example:
+```cs
+var tweets = twitter.GetHomeTimeline(maxID: 603281686600683520);
+```
+
 ### Retrieving a specific user's timeline
 Use the `GetUserTimeline` method to view the tweets and retweets posted by a specific user:
 ```cs
@@ -99,6 +106,11 @@ catch (Exception e)
 {
     // Couldn't retrieve the timeline, the exception may have more information
 }
+```
+
+Like `GetHomeTimeline`, you can specify the range of tweets to retrieve with `sinceID` and `maxID`:
+```cs
+var tweets = twitter.GetUserTimeline("twitter", sinceID: 600728701584576512);
 ```
 
 ### Other features
