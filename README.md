@@ -22,6 +22,13 @@ Once you've referenced the MicroTweet assembly from your application, add a `usi
 using MicroTweet;
 ```
 
+Also, if you use DHCP, you may want to wait for an IP address to be acquired before performing any network operations.
+You can do this by checking the value of `IPAddress.GetDefaultLocalAddress()` at the beginning of your program:
+```cs
+while (IPAddress.GetDefaultLocalAddress() == IPAddress.Any)
+    Thread.Sleep(50);
+```
+
 ### Setting the current time
 **Important:** Twitter API requests must contain a valid (current) timestamp.
 For your convenience, an SNTP class is included with MicroTweet to retrieve the current time from an NTP server.
