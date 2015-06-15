@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MicroTweet</id>
-    <version>2.0.0.0</version>
+    <version>2.0.1.0</version>
     <title>MicroTweet - Twitter API Library for the .NET Micro Framework</title>
     <summary>A Twitter OAuth API library for the .NET Micro Framework</summary>
     <description>A Twitter OAuth API library for the .NET Micro Framework. Requires NETMF v4.3 and a board that supports SSL.</description>
