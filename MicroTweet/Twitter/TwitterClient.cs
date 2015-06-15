@@ -269,5 +269,23 @@ namespace MicroTweet
 
             throw new TwitterException(response.StatusCode, response.ResponseBody);
         }
+
+        /// <summary>
+        /// Returns a single tweet, specified by the id parameter.
+        /// </summary>
+        /// <param name="id">The numerical ID of the desired tweet.</param>
+        public Tweet GetTweet(long id)
+        {
+            var parameters = new QueryParameter[] { new QueryParameter("id", id.ToString()) };
+
+            var response = SubmitRequest("GET", "https://api.twitter.com/1.1/statuses/show.json", parameters);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var data = Json.Parse(response.ResponseBody);
+                return new Tweet(this, (Hashtable)data);
+            }
+
+            throw new TwitterException(response.StatusCode, response.ResponseBody);
+        }
     }
 }
